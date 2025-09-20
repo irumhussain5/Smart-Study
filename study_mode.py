@@ -1,11 +1,6 @@
 # pip install streamlit google-genai
 
-import os
-import streamlit as st
-from google import genai
-from google.genai import types
-import json
-
+import google.generativeai as genai
 # Initialize Gemini client
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
