@@ -1,33 +1,43 @@
-# Install first:
-# pip install google-generativeai
+# To run this code you need to install the following dependencies:
+# pip install google-genai
 
+import base64
 import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-# 1. Configure Gemini with your API key
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
 def generate():
-    # 2. Choose a model (fast + good for Q&A)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    client = genai.Client(
+        api_key=os.environ.get("GEMINI_API_KEY"),
+    )
 
-    # 3. Create a Study Mode prompt
-    prompt = """
-    You are Study Mode, a teaching assistant.
-    - Always explain step by step.
-    - Then return JSON with:
-      "solution": detailed explanation
-      "quiz": 3 short quiz questions
-      "flashcard": { "front": "question", "back": "answer" }
+    model = "gemini-2.5-pro"
+    contents = [
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text="""INSERT_INPUT_HERE"""),
+            ],
+        ),
+    ]
+    tools = [
+        types.Tool(googleSearch=types.GoogleSearch(
+        )),
+    ]
+    generate_content_config = types.GenerateContentConfig(
+        thinking_config = types.ThinkingConfig(
+            thinking_budget=-1,
+        ),
+        tools=tools,
+    )
 
-    User question: Explain Newton's Second Law.
-    """
-
-    # 4. Generate response
-    response = model.generate_content(prompt)
-
-    # 5. Print text output
-    print(response.text)
+    for chunk in client.models.generate_content_stream(
+        model=model,
+        contents=contents,
+        config=generate_content_config,
+    ):
+        print(chunk.text, end="")
 
 if __name__ == "__main__":
     generate()
