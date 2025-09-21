@@ -1,43 +1,21 @@
-# To run this code you need to install the following dependencies:
-# pip install google-genai
+# smart study.py
 
-import base64
+# Corrected import statement
+import google.generativeai as genai
 import os
-from google import genai
-from google.genai import types
 
+# --- Example of how to use it ---
+# It's a good practice to use environment variables for your API key
+# from dotenv import load_dotenv
+# load_dotenv()
+# genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
-def generate():
-    client = genai.Client(
-        api_key=os.environ.get("GEMINI_API_KEY"),
-    )
+# Or configure it directly (less secure)
+# genai.configure(api_key="YOUR_API_KEY")
 
-    model = "gemini-2.5-pro"
-    contents = [
-        types.Content(
-            role="user",
-            parts=[
-                types.Part.from_text(text="""INSERT_INPUT_HERE"""),
-            ],
-        ),
-    ]
-    tools = [
-        types.Tool(googleSearch=types.GoogleSearch(
-        )),
-    ]
-    generate_content_config = types.GenerateContentConfig(
-        thinking_config = types.ThinkingConfig(
-            thinking_budget=-1,
-        ),
-        tools=tools,
-    )
+# Now you can use the library, for example:
+# model = genai.GenerativeModel('gemini-pro')
+# response = model.generate_content("Explain what a large language model is.")
+# print(response.text)
 
-    for chunk in client.models.generate_content_stream(
-        model=model,
-        contents=contents,
-        config=generate_content_config,
-    ):
-        print(chunk.text, end="")
-
-if __name__ == "__main__":
-    generate()
+print("Google Generative AI library imported successfully!")
