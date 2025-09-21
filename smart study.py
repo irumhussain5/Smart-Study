@@ -2,7 +2,6 @@
 
 # Corrected import statement
 import google.generativeai as genai
-import os
 
 # --- Example of how to use it ---
 # It's a good practice to use environment variables for your API key
