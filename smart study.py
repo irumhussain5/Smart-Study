@@ -1,7 +1,7 @@
 # smart study.py
 
 # Corrected import statement
-import google.generativeai 
+pip install -q -U google-generativeai 
 
 # --- Example of how to use it ---
 # It's a good practice to use environment variables for your API key
